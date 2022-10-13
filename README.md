@@ -14,7 +14,7 @@ Playwright Automated Testing Tool Demo Project
 * [Node.js](https://nodejs.org/) (with npm)
 * [Visual Studio Code](https://code.visualstudio.com/)
 
-### Verify installation (should show version if installed i.e. v16.16.0 )
+### Verify installation
 ```
 node -v
 ```
@@ -24,18 +24,18 @@ npm -v
 ```
 code -v
 ```
-### Example (Command Prompt):
+#### Verification Examples (Command Prompt):
 ```
 Microsoft Windows [Version 10.0.22000.856]
 (c) Microsoft Corporation. All rights reserved.
 
-C:\Users\[user.name]>node -v
+C:\Users\[user]>node -v
 v16.16.0
 
-C:\Users\[user.name]>npm -v
+C:\Users\[user]>npm -v
 8.11.0
 
-C:\Users\[user.name]>code -v
+C:\Users\[user]>code -v
 1.70.2
 e4503b30fc78200f846c62cf8091b76ff5547662
 x64

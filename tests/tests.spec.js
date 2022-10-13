@@ -139,30 +139,35 @@ test.describe('Login Tests - VERSION 03 - Page Object Model + Data Parameters', 
 
 test.describe('Login Tests - VERSION 02 - Basic Test with external locators + steps', () => {
 
-  test.only(`Login as : USER`, async ({ page }) => {
+  test(`Login as : USER`, async ({ page }) => {
 
-    await test.step(`Step 1 - Launch Application`, async () => {
+    await test.step(`Step 1 - Load Site Data for user: ADMIN`, async () => {
+      data.UserType = 'ADMIN'
+      data.UserName = 'admin@'
+      data.Password = 'root'
+    });
+
+    await test.step(`Step 2 - Launch Application`, async () => {
       await page.goto(data.BaseUrl);
       await expect(page).toHaveTitle(data.HomePageTitle);
       await expect(page).toHaveURL(data.HomePageUrl);
       await expect(page.locator(locators.HomePageHeading)).toContainText(data.HomePageHeading);
     });
 
-    await test.step(`Step 1 - Navigate to Login Page`, async () => {
+    await test.step(`Step 3 - Navigate to Login Page`, async () => {
       await page.locator(locators.LoginMenuItem).click();
       await expect(page).toHaveTitle(data.LoginPageTitle);
       await expect(page).toHaveURL(data.LoginPageUrl);
       await expect(page.locator(locators.LoginPageHeading)).toContainText(data.LoginPageHeading);
     });
 
-    await test.step(`Step 3 - Login as ADMIN`, async () => {
-      await page.fill(locators.UserNameInput, 'admin@');
+    await test.step(`Step 4 - Login as ADMIN`, async () => {
+      await page.fill(locators.UserNameInput, data.UserName);
       await page.fill(locators.PasswordInput, 'root');
       await page.click(locators.SubmitButton);
-
     });
 
-    await test.step(`Step 4 - Validate Login`, async () => {
+    await test.step(`Step 5 - Validate Login`, async () => {
       await expect(page.locator(locators.CurrentUserName)).toContainText(data.UserName);
       await expect(page.locator(locators.LogoutMenuItem)).toContainText(`${data.LoggedInMenuText} ${data.UserName}`);
       await expect(page).toHaveTitle(data.FormPageTitle);
@@ -170,7 +175,7 @@ test.describe('Login Tests - VERSION 02 - Basic Test with external locators + st
       await expect(page.locator(locators.FormPageHeading)).toContainText(data.FormPageHeading);
     });
 
-    await test.step(`Step 5 - Logout`, async () => {
+    await test.step(`Step 6 - Logout`, async () => {
       await page.click(locators.LogoutMenuItem);
       await expect(page.locator(locators.LoginMenuItem)).toHaveText(data.LoggedOutMenuText);
     });
@@ -180,7 +185,7 @@ test.describe('Login Tests - VERSION 02 - Basic Test with external locators + st
 
 test.describe('Login Tests - VERSION 01 - Basic Test with inline locators', () => {
 
-  test.only(`Login as : USER`, async ({ page }) => {
+  test(`Login as : USER`, async ({ page }) => {
 
     await page.goto('https://testautomationpro.com/aut/');
     await expect(page).toHaveTitle('Home - Guestbook Demo');
