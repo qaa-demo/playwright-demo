@@ -14,18 +14,6 @@ Playwright Automated Testing Tool Demo Project
 * [Node.js](https://nodejs.org/) (with npm)
 * [Visual Studio Code](https://code.visualstudio.com/)
 
-
-## Installation
-```
-git clone https://github.com/kiseta/pw-demo.git
-```
-```
-cd pw-demo
-```
-```
-npm install
-```
-
 ### Verify installation (should show version if installed i.e. v16.16.0 )
 ```
 node -v
@@ -54,14 +42,26 @@ x64
 
 ```
 
+
+## Project and dependancies Installation
+```
+git clone https://github.com/tatyana-kiseleva/playwright-demo.git
+```
+```
+cd playwright-demo
+```
+```
+npm install
+```
+
 # Run the tests
 ### Run all tests:
   ```
   npm test 
   ```
-### Run individual site tests:
+### Run individual test files:
   ```
-  npm test test.spec.js
+  npm test tests.spec.js
   ```
 
 By default test runs in **headless mode** . To see the browser during execution change to headed mode - update **playwight.config.js** file:
@@ -76,7 +76,7 @@ To always capture and keep the last trace, update **playwight.config.js** file:
 ```
 trace: 'on'
 ``` 
-To always capture and execution video, update **playwight.config.js** file:
+To always capture and keep execution video, update **playwight.config.js** file:
 ```
 video: 'on'
 ``` 

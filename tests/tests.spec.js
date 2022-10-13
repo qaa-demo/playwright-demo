@@ -20,7 +20,7 @@ const user1 = 'ADMIN'
 const user2 = 'USER'
 const user3 = 'NOUSER'
 
-test.describe('Login Tests - Reusable Tests', () => {
+test.describe('Login Tests - VERSION 05 - Full Reusable Tests', () => {
 
   test(`Login as : ${user1}`, async ({ page }) => {
 
@@ -41,8 +41,23 @@ test.describe('Login Tests - Reusable Tests', () => {
   });
 });
 
+test.describe('Login Tests - VERSION 04 - Basic Reusability', () => {
 
-test.describe('Login Tests - No Reusability', () => {
+  test(`Login as : USER`, async ({ page }) => {
+
+    await common.LoadData('USER', 1);
+    await common.LaunchApp(page, 2);
+    await common.NavigateToLoginPage(page, 3);
+    await common.LoginAs(page, 4);
+    await common.ValidateValidLogin(page, 5)
+    await common.Logout(page, 6)
+
+  });
+
+
+});
+
+test.describe('Login Tests - VERSION 03 - Page Object Model + Data Parameters', () => {
 
   test(`Login as: ADMIN`, async ({ page }) => {
 
@@ -122,44 +137,69 @@ test.describe('Login Tests - No Reusability', () => {
 
 });
 
-test.describe('Login Tests - Basic Reusability', () => {
+test.describe('Login Tests - VERSION 02 - Basic Test with external locators + steps', () => {
 
-  test(`Login as : USER`, async ({ page }) => {
+  test.only(`Login as : USER`, async ({ page }) => {
 
-    await common.LoadData('USER', 1);
-    await common.LaunchApp(page, 2);
-    await common.NavigateToLoginPage(page, 3);
-    await common.LoginAs(page, 4);
-    await common.ValidateValidLogin(page, 5)
-    await common.Logout(page, 6)
+    await test.step(`Step 1 - Launch Application`, async () => {
+      await page.goto(data.BaseUrl);
+      await expect(page).toHaveTitle(data.HomePageTitle);
+      await expect(page).toHaveURL(data.HomePageUrl);
+      await expect(page.locator(locators.HomePageHeading)).toContainText(data.HomePageHeading);
+    });
 
+    await test.step(`Step 1 - Navigate to Login Page`, async () => {
+      await page.locator(locators.LoginMenuItem).click();
+      await expect(page).toHaveTitle(data.LoginPageTitle);
+      await expect(page).toHaveURL(data.LoginPageUrl);
+      await expect(page.locator(locators.LoginPageHeading)).toContainText(data.LoginPageHeading);
+    });
+
+    await test.step(`Step 3 - Login as ADMIN`, async () => {
+      await page.fill(locators.UserNameInput, 'admin@');
+      await page.fill(locators.PasswordInput, 'root');
+      await page.click(locators.SubmitButton);
+
+    });
+
+    await test.step(`Step 4 - Validate Login`, async () => {
+      await expect(page.locator(locators.CurrentUserName)).toContainText(data.UserName);
+      await expect(page.locator(locators.LogoutMenuItem)).toContainText(`${data.LoggedInMenuText} ${data.UserName}`);
+      await expect(page).toHaveTitle(data.FormPageTitle);
+      await expect(page).toHaveURL(data.FormPageUrl);
+      await expect(page.locator(locators.FormPageHeading)).toContainText(data.FormPageHeading);
+    });
+
+    await test.step(`Step 5 - Logout`, async () => {
+      await page.click(locators.LogoutMenuItem);
+      await expect(page.locator(locators.LoginMenuItem)).toHaveText(data.LoggedOutMenuText);
+    });
   });
-
 
 });
 
-test.describe('Login Tests - Basic Test', () => {
+test.describe('Login Tests - VERSION 01 - Basic Test with inline locators', () => {
 
-  test(`Login as : USER`, async ({ page }) => {
+  test.only(`Login as : USER`, async ({ page }) => {
 
-    await page.goto(data.BaseUrl);
-    await expect(page).toHaveTitle(data.HomePageTitle);
-    await expect(page).toHaveURL(data.HomePageUrl);
-    await expect(page.locator(locators.HomePageHeading)).toContainText(data.HomePageHeading);
-    await page.locator(locators.LoginMenuItem).click();
-    await expect(page).toHaveTitle(data.LoginPageTitle);
-    await expect(page).toHaveURL(data.LoginPageUrl);
-    await expect(page.locator(locators.LoginPageHeading)).toContainText(data.LoginPageHeading);
-    await page.fill(locators.UserNameInput, 'admin@');
-    await page.fill(locators.PasswordInput, 'root');
-    await page.click(locators.SubmitButton);
-    await expect(page.locator(locators.CurrentUserName)).toContainText(data.UserName);
-    await expect(page.locator(locators.LogoutMenuItem)).toContainText(`${data.LoggedInMenuText} ${data.UserName}`);
-    await expect(page).toHaveTitle(data.FormPageTitle);
-    await expect(page).toHaveURL(data.FormPageUrl);
-    await expect(page.locator(locators.FormPageHeading)).toContainText(data.FormPageHeading);
-    await page.click(locators.LogoutMenuItem);
-    await expect(page.locator(locators.LoginMenuItem)).toHaveText(data.LoggedOutMenuText);
+    await page.goto('https://testautomationpro.com/aut/');
+    await expect(page).toHaveTitle('Home - Guestbook Demo');
+    await expect(page).toHaveURL('https://testautomationpro.com/aut/');
+    await expect(page.locator('id=main-header')).toContainText('Guestbook Demo');
+    await page.locator('id=LoginMenuItem').click();
+    await expect(page).toHaveTitle('Login - Guestbook Demo');
+    await expect(page).toHaveURL('https://testautomationpro.com/aut/login.php');
+    await expect(page.locator('id=login-page-main-header')).toContainText('Login');
+    await page.fill('id=txt_username', 'admin@');
+    await page.fill('id=txt_password', 'root');
+    await page.locator('id=btn_submit').click();
+    await expect(page.locator('id=current_user_name')).toContainText('admin@');
+    await expect(page.locator(locators.LogoutMenuItem)).toContainText(`Logout admin@`);
+    await expect(page).toHaveTitle('Sign the Guestbook - Guestbook Demo');
+    await expect(page).toHaveURL('https://testautomationpro.com/aut/form.php');
+    await expect(page.locator('id=sign-form-main-header')).toContainText('Sign The Guestbook');
+    await page.locator('id=LogoutMenuItem').click();
+    await expect(page.locator('id=LoginMenuItem')).toHaveText('Login');
 
   });
 
