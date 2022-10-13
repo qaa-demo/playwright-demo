@@ -1,0 +1,4 @@
+RecNum,UserType,UserName,Password
+1,ADMIN,admin@,root
+2,USER,Demouser,Demopass
+3,NOUSER,foo,bar
