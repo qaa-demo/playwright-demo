@@ -8,126 +8,100 @@ module.exports = {
     // reusable components
 
     LoadData: async function (usertype, stepnum) {
-        const stepInfo = `Step ${stepnum} - Load Site Data for user: ${usertype}`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
+          await test.step(`Step ${stepnum} - Load Site Data for user: ${usertype}`, async () => {
             // console.log(`**Step ${stepnum}`)
 
             // ---------------------------- LOAD DATA  ----------------------------------
 
-            const fs = require('fs');
-            const path = require('path');
-            const { parse } = require('csv-parse/sync');
+            const fs = require("fs");
+            const path = require("path");
+            const { parse } = require("csv-parse/sync");
 
-            const records = parse(fs.readFileSync(path.join(__dirname, '_input.csv')), { columns: true, skip_empty_lines: true });
+            const records = parse(
+              fs.readFileSync(path.join(__dirname, "_input.csv")),
+              { columns: true, skip_empty_lines: true }
+            );
 
             let user_record = function (usertype) {
-                let index = records.findIndex(function (item) {
-                    return item.UserType === usertype;
-                });
-                return records[index]
-            }
+              let index = records.findIndex(function (item) {
+                return item.UserType === usertype;
+              });
+              return records[index];
+            };
 
             const record = user_record(usertype);
 
-            console.log(`User Data:`)
-            console.log(record)
+            console.log(`User Data:`);
+            console.log(record);
 
             // update data parameters based on user data
-            data.UserType = record.UserType
-            data.UserName = record.UserName
-            data.Password = record.Password
-            
-        });
+            data.UserType = record.UserType;
+            data.UserName = record.UserName;
+            data.Password = record.Password;
+          });
     },
 
     LaunchApp: async function (page, stepnum) {
-        const stepInfo = `Step ${stepnum} - Navigate to application`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
-
+          await test.step(`Step ${stepnum} - Navigate to application`, async () => {
             const homePage = new HomePage(page);
-            await homePage.navigateToHomePage()
-            await homePage.validateHomePage()
-        });
+            await homePage.navigateToHomePage();
+            await homePage.validateHomePage();
+          });
     },
 
     NavigateToLoginPage: async function (page, stepnum) {
-        const stepInfo = `Step ${stepnum} - Navigate to Login Page`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
-
+          await test.step(`Step ${stepnum} - Navigate to Login Page`, async () => {
             const loginPage = new LoginPage(page);
             await loginPage.navigateToLoginPage();
             await loginPage.validateLoginPage();
-
-        });
+          });
     },
 
     LoginAs: async function (page, stepnum) {
-        const stepInfo = `Step ${stepnum} - Login as ${data.UserType}`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
-
+          await test.step(`Step ${stepnum} - Login as ${data.UserType}`, async () => {
             const loginPage = new LoginPage(page);
             await loginPage.loginAs();
-        });
+          });
     },
 
     ValidateValidLogin: async function (page, stepnum) {
-        const stepInfo = `Step ${stepnum} - Validate Login, User: ${data.UserType}`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
 
+          await test.step(`Step ${stepnum} - Validate Login, User: ${data.UserType}`, async () => {
             const loginPage = new LoginPage(page);
-
             await loginPage.validateValidUserLogin();
-        });
+          });
     },
+
     ValidateInvalidLogin: async function (page, stepnum) {
-        const stepInfo = `Step ${stepnum} - Validate Login, User: ${data.UserType}`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
-
+          await test.step(`Step ${stepnum} - Validate Login, User: ${data.UserType}`, async () => {
             const loginPage = new LoginPage(page);
-
             await loginPage.validateInvalidUserLogin();
-        });
+          });
     },
 
     Logout: async function (page, stepnum) {
-        const stepInfo = `Step ${stepnum} - Logout`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
-
+          await test.step(`Step ${stepnum} - Logout`, async () => {
             const loginPage = new LoginPage(page);
-            await loginPage.Logout()
+            await loginPage.Logout();
             await loginPage.ValidateLogout();
-        });
+          });
 
     },
 
-    AddNewGuestbookEntry: async function (page, stepnum) {
-        const stepInfo = `Step ${stepnum} - Populate all values on the Guestbookform`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
-
+    AddGuestbookEntry: async function (page, stepnum) {
+          await test.step(`Step ${stepnum} - Submit New Guestbook entry`, async () => {
             const newGuestBookPage = new FormPage(page);
-
-            
-        });
+            await newGuestBookPage.submitGuestBookEntry();
+          });
 
     },
 
     ValidateGuestBookEntry: async function (page, stepnum, section) {
-        const stepInfo = `Step ${stepnum} - Validate Gestbook Entry`
-        console.log(stepInfo)
-        await test.step(stepInfo, async () => {
-
+          await test.step(`Step ${stepnum} - Validate Gestbook Entry`, async () => {
             const newGuestBookPage = new FormPage(page);
-            
-
-        });
+            await newGuestBookPage.validateInputData();
+            await newGuestBookPage.validateGuestbookData();
+          });
 
     },
 
@@ -142,7 +116,7 @@ module.exports = {
       await this.NavigateToLoginPage(page, 3);
       await this.LoginAs(page, 4);
       await this.ValidateValidLogin(page, 5)
-      await this.AddNewGuestbookEntry(page, 6);
+      await this.AddGuestbookEntry(page, 6);
       await this.ValidateGuestBookEntry(page, 7)
       await this.Logout(page, 8)
     },
@@ -174,7 +148,6 @@ module.exports = {
     },
 
     ReusableTemplate: async function (page, stepnum) {
-        console.log(`**Step ${stepnum}`)
         await test.step(`Step ${stepnum} - Step Desctiption`, async () => {
 
         });
