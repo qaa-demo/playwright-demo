@@ -1,5 +1,4 @@
-// Load Chance
-var chance = require("chance").Chance();
+// resources/locators.js
 
 const locators = {
   HomePageHeading: "id=main-header",
@@ -48,12 +47,12 @@ const data = {
   UserName: "",
   Password: "",
   //----------- randomly assigned, see below -----
-  FullName: "",
-  Email: "",
-  Newsletter: "",
-  Gender: "",
-  Favtool: "",
-  CommentText: "",
+  UserFullname: "",
+  UserEmail: "",
+  UserNewsletter: "",
+  UserGender: "",
+  UserFavtool: "",
+  UserComment: "",
   //----------------
   EntryUniqueID: '',
   //----------------
@@ -80,30 +79,4 @@ const data = {
   //------------------
 };
 
-module.exports = { locators, data};
-
-// ------------------------- generate random data
-// var gndr = chance.gender();
-var gndr = chance.pickone(['Male', 'Female']);
-var fullName = chance.name({ gender: gndr });
-var fName = fullName.split(" ").shift();
-var lName = fullName.split(" ").pop();
-var userName = ( fullName.substring(0, 13) + chance.integer({ min: 11, max: 99 })).toLowerCase().replace(" ", "");
-var freeDomain = chance.pickone(["alpha.com", "bravo.net", "charlie.org", "delta.biz", "echo.ca", "favicon.dev", "gmail.com", "hotmail.com", "yahoo.com",]);
-var userEmail = `${userName}@${freeDomain}`;
-var favTool = chance.pickone(["Microfocus UFT One", "Selenium WebDriver", "Katalon Studio", "Microsoft Playwright",]);
-var commentText = chance.paragraph({
-  sentences: chance.integer({ min: 2, max: 5 }),
-});
-var NewsLetter = chance.pickone(["Yes", "No"]);
-
-console.log(
-  `${fullName}\n${userEmail}\n${NewsLetter}\n${gndr}\n${favTool}\n${commentText}`
-);
-
-data.FullName = fullName;
-data.Email = userEmail;
-data.Newsletter = NewsLetter;
-data.Gender = gndr;
-data.Favtool = favTool;
-data.CommentText = commentText;
+module.exports = { locators, data };

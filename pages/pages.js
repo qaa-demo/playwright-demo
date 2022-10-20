@@ -1,3 +1,5 @@
+// pages/pages.js
+
 const { test, expect } = require("@playwright/test");
 const { locators, data } = require("../resources/locators");
 
@@ -127,9 +129,7 @@ class FormPage {
   }
 
   async validateFormPageTitle() {
-    await expect(this.page.locator(locators.FormPageHeading)).toContainText(
-      data.FormPageHeading
-    );
+    await expect(this.page.locator(locators.FormPageHeading)).toContainText(data.FormPageHeading);
   }
 
   async validateFormPage() {
@@ -139,31 +139,31 @@ class FormPage {
   }
 
   async enterFullName() {
-    await this.page.fill(locators.FullNameInput, data.FullName);
+    await this.page.fill(locators.FullNameInput, data.UserFullname);
   }
 
   async enterEmail() {
-    await this.page.fill(locators.EmailInput, data.Email);
+    await this.page.fill(locators.EmailInput, data.UserEmail);
   }
 
   async selectNewsletterCheckbox() {
-    if (data.Newsletter == "Yes") {
+    if (data.UserNewsletter == "Yes") {
       await this.page.click(locators.NewsletterCheckbox);
     }
   }
 
   async selectGenderOption() {
-    if (data.Gender == "Female") {
+    if (data.UserGender == "Female") {
       await this.page.locator(locators.GenderFemaleOption).check();
     }
   }
 
   async selectFavoriteToolList() {
-    await this.page.selectOption(locators.FavtoolList, data.Favtool);
+    await this.page.selectOption(locators.FavtoolList, data.UserFavtool);
   }
 
   async enterComment() {
-    await this.page.fill(locators.CommentTextInput, data.CommentText);
+    await this.page.fill(locators.CommentTextInput, data.UserComment);
   }
 
   async clickSubmitButton() {
@@ -196,32 +196,32 @@ class FormPage {
   }
 
   async validateTitleName() {
-    await expect(this.page.locator(locators.TitleName)).toContainText(data.FullName);
+    await expect(this.page.locator(locators.TitleName)).toContainText(data.UserFullname);
   }
 
   async validateFullName() {
-    await expect(this.page.locator(locators.FullNameValue)).toContainText(data.FullName);
+    await expect(this.page.locator(locators.FullNameValue)).toContainText(data.UserFullname);
   }
 
   async validateEmail() {
-    await expect(this.page.locator(locators.EmailValue)).toContainText(data.Email);
+    await expect(this.page.locator(locators.EmailValue)).toContainText(data.UserEmail);
   }
 
   async validateNewsletter() {
-    await expect(this.page.locator(locators.NewsletterSelection)).toContainText(data.Newsletter);
+    await expect(this.page.locator(locators.NewsletterSelection)).toContainText(data.UserNewsletter);
   }
 
   async validateGender() {
-    await expect(this.page.locator(locators.GenderSelection)).toContainText(data.Gender.toLowerCase()
+    await expect(this.page.locator(locators.GenderSelection)).toContainText(data.UserGender.toLowerCase()
     );
   }
 
   async validateFavoriteTool() {
-    await expect(this.page.locator(locators.FavtoolSelection)).toContainText(data.Favtool);
+    await expect(this.page.locator(locators.FavtoolSelection)).toContainText(data.UserFavtool);
   }
 
   async validateComment() {
-    await expect(this.page.locator(locators.CommentValue)).toContainText(data.CommentText.substring(0, 250));
+    await expect(this.page.locator(locators.CommentValue)).toContainText(data.UserComment.substring(0, 250));
   }
 
   async navigateViewGuestBook(){
@@ -229,7 +229,7 @@ class FormPage {
   }
 
   async validateGuestbookName() {
-    await expect(this.page.locator(locators.GuestbookName)).toContainText(data.FullName);
+    await expect(this.page.locator(locators.GuestbookName)).toContainText(data.UserFullname);
   }
 
   async validateGuestbookEmail() {
@@ -237,11 +237,11 @@ class FormPage {
   }
 
   async validateGuestbookFavoriteTool() {
-    await expect(this.page.locator(locators.GuestbookFavtool)).toContainText(data.Favtool);
+    await expect(this.page.locator(locators.GuestbookFavtool)).toContainText(data.UserFavtool);
   }
 
   async validateGuestbookComment() {
-    await expect(this.page.locator(locators.GuestbookComment)).toContainText(data.CommentText.substring(0, 250));
+    await expect(this.page.locator(locators.GuestbookComment)).toContainText(data.UserComment.substring(0, 250));
   }
 
   async validateInputData() {

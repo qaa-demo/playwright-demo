@@ -17,13 +17,13 @@ const user1 = 'ADMIN'
 const user2 = 'USER'
 const user3 = 'NOUSER'
 
-test.describe('Login Tests - VERSION 05 - Full Reusable Tests', () => {
+// test.describe('Login Tests - VERSION 05 - Full Reusable Tests', () => {
 
-  test(`Login as : ${user1}`, async ({ page }) => {
+//   test(`Login as : ${user1}`, async ({ page }) => {
 
-    await common.ValidUserLogin_Steps(page, user1);
+//     await common.ValidUserLogin_Steps(page, user1);
 
-  });
+//   });
 
   // test(`Login as : ${user2}`, async ({ page }) => {
 
@@ -36,7 +36,7 @@ test.describe('Login Tests - VERSION 05 - Full Reusable Tests', () => {
   //   await common.InvalidUserLogin_Steps(page, user3);
 
   // });
-});
+// });
 
 test.describe('Login Tests - VERSION 04 - Basic Reusability', () => {
 
