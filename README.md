@@ -118,10 +118,13 @@ class HomePage {
   }
 ```
 Add Methods
+```
+
+```
 
 ## tests/common.js
 Add Common Steps
 Add Reusable Step Components
 
 ## tests/tests.spec.js
-Add New Tests if required
+Add New Tests 
