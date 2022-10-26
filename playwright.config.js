@@ -1,67 +1,34 @@
-// @ts-check
-// const { devices } = require('@playwright/test');
-import devices from "@playwright/test"
+
+const { devices } = require('@playwright/test');
 
 Object.assign(global, {
   BASE_URL: 'https://testautomationpro.com/aut/',
 });
 
-// HomePage_URL: 'https://minevaluemaximizer-qa.galileo.teck.com/site/',
-// HomePage_title: 'Coal Recovery',
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config({ debug: true });
-// console.log(process.env)
-
-
-/**
- * @see https://playwright.dev/docs/test-configuration
- * @type {import('@playwright/test').PlaywrightTestConfig}
- */
-
 const config = {
   testDir: './tests',
-  /* Maximum time one test can run for. */
-  timeout: 50 * 10000,
+  timeout: 50 * 10000, /* Maximum time one test can run for. */
   expect: {
-    /**
-     * Maximum time expect() should wait for the condition to be met.
-     * For example in `await expect(locator).toHaveText();`
-     */
-    timeout: 10000,
+    timeout: 10000, /* Maximum time expect() should wait for the condition to be met.*/
   },
-  /* Run tests in files in parallel */
-  fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 1 : 0,
-  // retries: 1,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html', { open: 'always' }]],
+  fullyParallel: false,/* Run tests in files in parallel */
+  forbidOnly: !!process.env.CI, /* Fail the build on CI if you accidentally left test.only in the source code. */
+  retries: process.env.CI ? 1 : 0,/* Retry on CI only */
+  workers: process.env.CI ? 1 : 1,/* Opt out of parallel tests on CI. */
+  reporter: [['html', { open: 'always' }]],/* Reporter to use. See https://playwright.dev/docs/test-reporters */
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-    actionTimeout: 10 * 1000,
+    actionTimeout: 10 * 1000,/* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     navigationTimeout: 30 * 1000,
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on',
-    video: 'on',
+    trace: 'on', /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    video: 'on', /* Record Video */
     screenshot: 'only-on-failure',
     headless: false,
     launchOptions: {
-      slowMo: 500,
+      slowMo: 300,
     },
   },
-
+  outputDir: 'test-results/', /* Folder for test artifacts such as screenshots, videos, traces, etc. */
   /* Configure projects for major browsers */
   projects: [
     {
@@ -114,8 +81,7 @@ const config = {
     // },
   ],
 
-  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  outputDir: 'test-results/',
+
 
   /* Run your local dev server before starting the tests */
   // webServer: {

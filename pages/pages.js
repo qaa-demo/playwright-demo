@@ -39,7 +39,6 @@ class LoginPage {
     this.formPage = new FormPage(page);
   }
 
-
   async navigateToLoginPage() {
     await this.page.locator(locators.LoginMenuItem).click();
   }
@@ -101,6 +100,8 @@ class LoginPage {
 
   async ValidateLogout() {
     await expect(this.page.locator(locators.LoginMenuItem)).toHaveText(data.LoggedOutMenuText);
+    await expect(this.page.locator(locators.LogoutMenuItem)).not.toBeVisible();
+    await expect(this.page.locator(locators.CurrentUserName)).not.toBeVisible();
   }
 
   async Logout() {
@@ -112,6 +113,7 @@ class LoginPage {
 }
 
 class FormPage {
+  
   constructor(page) {
     this.page = page;
   }
@@ -260,6 +262,17 @@ class FormPage {
     await this.validateGuestbookFavoriteTool();
     await this.validateGuestbookComment();
   }
+}
+
+class TemplatePage{
+  constructor(page) {
+    this.page = page;
+  }
+
+  async TemplateMethod() {
+    await this.page.locator(locators.SignGuestBookMenuItem).click();
+  }
+
 }
 
 

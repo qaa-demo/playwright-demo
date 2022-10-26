@@ -3,20 +3,17 @@ const { test } = require("@playwright/test");
 const { LoginPage, HomePage, FormPage } = require('../pages/pages');
 const { data } = require('../resources/locators')
 var chance = require("chance").Chance();
+const fs = require("fs");
+const path = require("path");
+const { parse } = require("csv-parse/sync");
 
 module.exports = {
 
-  // reusable components
+  // common steps ----------------------------------------------
 
   LoadLoginData: async function (usertype, stepnum) {
+    
     await test.step(`Step ${stepnum} - Load Site Data for user: ${usertype}`, async () => {
-      // console.log(`**Step ${stepnum}`)
-
-      // ---------------------------- LOAD DATA  ----------------------------------
-
-      const fs = require("fs");
-      const path = require("path");
-      const { parse } = require("csv-parse/sync");
 
       const records = parse(
         fs.readFileSync(path.join(__dirname, "_input.csv")),
@@ -32,14 +29,10 @@ module.exports = {
 
       const record = user_record(usertype);
 
-      console.log(`User Data:`);
-      console.log(record);
-
       // update data parameters based on user data
       data.UserType = record.UserType;
       data.UserName = record.UserName;
       data.Password = record.Password;
-
 
     });
   },
@@ -56,7 +49,7 @@ module.exports = {
       var domainName = chance.domain();
       var userEmail = `${userName}@${domainName}`;
       var userFavtool = chance.pickone(["Microfocus UFT One", "Selenium WebDriver", "Katalon Studio", "Microsoft Playwright",]);
-      var userComment = chance.paragraph({sentences: chance.integer({ min: 2, max: 5 }),});
+      var userComment = chance.paragraph({ sentences: chance.integer({ min: 2, max: 5 }), });
       var userNewsletter = chance.pickone(["Yes", "No"]);
 
       data.UserFullname = userFullname;
@@ -66,9 +59,7 @@ module.exports = {
       data.UserFavtool = userFavtool;
       data.UserComment = userComment;
 
-      console.log(
-        `${userFullname}\n${userEmail}\n${userNewsletter}\n${userGender}\n${userFavtool}\n${userComment}`
-      );
+      console.log(`${userFullname}\n${userEmail}\n${userNewsletter}\n${userGender}\n${userFavtool}\n${userComment}`);
     });
   },
 
@@ -84,7 +75,6 @@ module.exports = {
       await homePage.validateHomePage();
     });
   },
-
 
   NavigateToLoginPage: async function (page, stepnum) {
     await test.step(`Step ${stepnum} - Navigate to Login Page`, async () => {
@@ -142,9 +132,6 @@ module.exports = {
 
   },
 
-
-
-
   // reusable Tests --------------------------------------------------
 
   ValidUserLogin_Steps: async function (page, user) {
@@ -164,10 +151,9 @@ module.exports = {
     await this.NavigateToLoginPage(page, 3);
     await this.LoginAs(page, 4);
     await this.ValidateInvalidLogin(page, 5)
-
   },
 
-  // ----------------------------------------------------------
+  // hooks ------------------------------------------
 
   RunBefore: async function ({ page }, testInfo) {
     console.log(` ------------ Running ${testInfo.title}\nStart Time: ${new Date()}`);
@@ -184,8 +170,10 @@ module.exports = {
 
   },
 
+  //---------------------------------------------------------------------
+  // templates ----------------------------------------------
   ReusableTemplate: async function (page, stepnum) {
-    await test.step(`Step ${stepnum} - Step Desctiption`, async () => {
+    await test.step(`Step ${stepnum} - Step Description`, async () => {
 
     });
 

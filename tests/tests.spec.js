@@ -1,44 +1,42 @@
 const { test, expect } = require("@playwright/test");
-const common = require("./common");
+const common = require("./common.js");
 const { locators, data } = require("../resources/locators");
 const { LoginPage, HomePage, FormPage } = require('../pages/pages');
+var chance = require("chance").Chance();
+const fs = require('fs');
+const path = require('path');
+const { parse } = require('csv-parse/sync');
 
-
-test.beforeEach(async ({ page }, testInfo) => {
-  await common.RunBefore({ page }, testInfo);
-});
-
-test.afterEach(async ({ page }, testInfo) => {
-  await common.RunAfter({ page }, testInfo);
-});
 
 
 const user1 = 'ADMIN'
 const user2 = 'USER'
 const user3 = 'NOUSER'
 
-// test.describe('Login Tests - VERSION 05 - Full Reusable Tests', () => {
+test.describe('TEST SUITE 05 - Login Tests - VERSION 05 - Full Reusable Tests', () => {
 
-//   test(`Login as : ${user1}`, async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    await common.RunBefore({ page }, testInfo);
+  });
+  
+  test.afterEach(async ({ page }, testInfo) => {
+    await common.RunAfter({ page }, testInfo);
+  });
 
-//     await common.ValidUserLogin_Steps(page, user1);
+  test(`Login as : ${user1}`, async ({ page }) => {
+    await common.ValidUserLogin_Steps(page, user1);
+  });
 
-//   });
+  test(`Login as : ${user2}`, async ({ page }) => {
+    await common.ValidUserLogin_Steps(page, user2);
+  });
 
-  // test(`Login as : ${user2}`, async ({ page }) => {
+  test(`Login as : ${user3}`, async ({ page }) => {
+    await common.InvalidUserLogin_Steps(page, user3);
+  });
+});
 
-  //   await common.ValidUserLogin_Steps(page, user2);
-
-  // });
-
-  // test(`Login as : ${user3}`, async ({ page }) => {
-
-  //   await common.InvalidUserLogin_Steps(page, user3);
-
-  // });
-// });
-
-test.describe('Login Tests - VERSION 04 - Basic Reusability', () => {
+test.describe('TEST SUITE 04 - Login Tests - VERSION 04 - Basic Reusability', () => {
 
   test(`Login as : USER`, async ({ page }) => {
 
@@ -56,176 +54,185 @@ test.describe('Login Tests - VERSION 04 - Basic Reusability', () => {
 
 });
 
-// test.describe('Login Tests - VERSION 03 - Page Object Model + Data Parameters', () => {
+test.describe('TEST SUITE 03 - Login Tests - VERSION 03 - Page Object Model + Data Parameters', () => {
 
-//   test(`Login as: ADMIN`, async ({ page }) => {
+  test(`Test 1 - Login as: ADMIN`, async ({ page }) => {
 
-//     await test.step(`Step 1 - Load Site Data for user: ADMIN`, async () => {
-//       // ---------------------------- LOAD DATA  ----------------------------------
+    await test.step(`Step 1 - Load Site Data for user: ADMIN`, async () => {
+      // ---------------------------- LOAD DATA  ----------------------------------
+      await common.LoadData('ADMIN', 1)
 
-//       const fs = require('fs');
-//       const path = require('path');
-//       const { parse } = require('csv-parse/sync');
+    });
+    await test.step(`Step 2 - Launch Application`, async () => {
+      const homePage = new HomePage(page);
+      await homePage.navigateToHomePage()
+      await homePage.validateHomePage()
+    });
+    await test.step(`Step 3 - Navigate to Login Page`, async () => {
+      const loginPage = new LoginPage(page);
+      await loginPage.navigateToLoginPage();
+      await loginPage.validateLoginPage();
+    });
+    await test.step(`Step 4 - Login as ADMIN`, async () => {
+      const loginPage = new LoginPage(page);
+      await loginPage.loginAs();
 
-//       const records = parse(fs.readFileSync(path.join(__dirname, '_input.csv')), { columns: true, skip_empty_lines: true });
+    });
+    await test.step(`Step 5 - Validate Login`, async () => {
+      const loginPage = new LoginPage(page);
+      await loginPage.validateValidUserLogin();
+    });
+    await test.step(`Step 6 - Submit New Guestbook entry`, async () => {
+      const newGuestBookPage = new FormPage(page);
+      await newGuestBookPage.submitGuestBookEntry();
+    });
+    await test.step(`Step 7 - Validate Gestbook Entry`, async () => {
+      const newGuestBookPage = new FormPage(page);
+      await newGuestBookPage.validateInputData();
+      await newGuestBookPage.validateGuestbookData();
+    });
+    await test.step(`Step 8 - Logout`, async () => {
+      const loginPage = new LoginPage(page);
+      await loginPage.Logout()
+      await loginPage.ValidateLogout();
+    });
+  });
 
-//       let user_record = function (user1) {
-//         let index = records.findIndex(function (item) {
-//           return item.UserType === user1;
-//         });
-//         return records[index]
-//       }
+  test(`Test 2 - Login as : USER`, async ({ page }) => {
+    await common.LoadData('USER', 1);
+    await common.LaunchApp(page, 2);
+    await common.NavigateToLoginPage(page, 3);
+    await common.LoginAs(page, 4);
+    await common.ValidateValidLogin(page, 5)
+    await common.Logout(page, 6)
 
-//       const record = user_record(user1);
+  });
 
-//       console.log(`User Data:`)
-//       console.log(record)
+  test(`Test 3 Login as : ${user3}`, async ({ page }) => {
+    await common.LoadData(user3, 1);
+    await common.LaunchApp(page, 2);
+    await common.NavigateToLoginPage(page, 3);
+    await common.LoginAs(page, 4);
+    await common.ValidateInvalidLogin(page, 5)
 
-//       // update data parameters based on user data
+  });
 
-//       data.UserType = record.UserType
-//       data.UserName = record.UserName
-//       data.Password = record.Password
+});
 
-//     });
+test.describe('TEST SUITE 02 - Login Tests - VERSION 02 - Basic Test with external locators + steps', () => {
 
-//     await test.step(`Step 2 - Launch Application`, async () => {
-//       const homePage = new HomePage(page);
-//       await homePage.navigateToHomePage()
-//       await homePage.validateHomePage()
-//     });
+  test(`Login as : USER`, async ({ page }) => {
 
-//     await test.step(`Step 3 - Navigate to Login Page`, async () => {
-//       const loginPage = new LoginPage(page);
-//       await loginPage.navigateToLoginPage();
-//       await loginPage.validateLoginPage();
-//     });
+    await test.step(`Step 1 - Load Site Data for user: USER`, async () => {
 
-//     await test.step(`Step 4 - Login as ADMIN`, async () => {
-//       const loginPage = new LoginPage(page);
-//       await loginPage.loginAs();
+      // load user data from csv file
+      const records = parse(
+        fs.readFileSync(path.join(__dirname, "_input.csv")),
+        { columns: true, skip_empty_lines: true }
+      );
 
-//     });
+      let user_record = function (usertype) {
+        let index = records.findIndex(function (item) {
+          return item.UserType === usertype;
+        });
+        return records[index];
+      };
 
-//     await test.step(`Step 5 - Validate Login`, async () => {
-//       const loginPage = new LoginPage(page);
-//       await loginPage.validateValidUserLogin();
-//     });
+      const record = user_record(user1);
 
+      // update data parameters based on user data
+      data.UserType = record.UserType;
+      data.UserName = record.UserName;
+      data.Password = record.Password;
 
-//     await test.step(`Step 6 - Submit New Guestbook entry`, async () => {
-//       const newGuestBookPage = new FormPage(page);
-//       await newGuestBookPage.submitGuestBookEntry();
-//     });
-  
-//     await test.step(`Step 7 - Validate Gestbook Entry`, async () => {
-//       const newGuestBookPage = new FormPage(page);
-//       await newGuestBookPage.validateInputData();
-//       await newGuestBookPage.validateGuestbookData();
-//     });
+      // ------------------------- generate random data
+      // var gndr = chance.gender();
+      var userGender = chance.pickone(['Male', 'Female']);
+      var userFullname = chance.name({ gender: userGender });
+      var userName = (userFullname.toLowerCase().replace(" ", "").substring(0, 13) + chance.integer({ min: 11, max: 99 }));
+      var domainName = chance.domain();
+      var userEmail = `${userName}@${domainName}`;
+      var userFavtool = chance.pickone(["Microfocus UFT One", "Selenium WebDriver", "Katalon Studio", "Microsoft Playwright",]);
+      var userComment = chance.paragraph({ sentences: chance.integer({ min: 2, max: 5 }), });
+      var userNewsletter = chance.pickone(["Yes", "No"]);
 
-//     await test.step(`Step 7 - Logout`, async () => {
-//       const loginPage = new LoginPage(page);
-//       await loginPage.Logout()
-//       await loginPage.ValidateLogout();
-//     });
-//   });
+      // populate data parameters
+      data.UserFullname = userFullname;
+      data.UserEmail = userEmail;
+      data.UserNewsletter = userNewsletter;
+      data.UserGender = userGender;
+      data.UserFavtool = userFavtool;
+      data.UserComment = userComment;
+    });
 
-//   test(`Login as : USER`, async ({ page }) => {
-//     await common.LoadData('USER', 1);
-//     await common.LaunchApp(page, 2);
-//     await common.NavigateToLoginPage(page, 3);
-//     await common.LoginAs(page, 4);
-//     await common.ValidateValidLogin(page, 5)
-//     await common.Logout(page, 6)
+    await test.step(`Step 2 - Launch Application`, async () => {
+      await page.goto(data.BaseUrl);
+      await expect(page).toHaveTitle(data.HomePageTitle);
+      await expect(page).toHaveURL(data.HomePageUrl);
+      await expect(page.locator(locators.HomePageHeading)).toContainText(data.HomePageHeading);
+    });
 
-//   });
+    await test.step(`Step 3 - Navigate to Login Page`, async () => {
+      await page.locator(locators.LoginMenuItem).click();
+      await expect(page).toHaveTitle(data.LoginPageTitle);
+      await expect(page).toHaveURL(data.LoginPageUrl);
+      await expect(page.locator(locators.LoginPageHeading)).toContainText(data.LoginPageHeading);
+    });
 
-//   test(`Login as : ${user3}`, async ({ page }) => {
-//     await common.InvalidUserLogin_Steps(page, user3);
+    await test.step(`Step 4 - Login as ADMIN`, async () => {
+      await page.fill(locators.UserNameInput, data.UserName);
+      await page.fill(locators.PasswordInput, 'root');
+      await page.click(locators.SubmitButton);
+    });
 
-//   });
+    await test.step(`Step 5 - Validate Login`, async () => {
+      await expect(page.locator(locators.CurrentUserName)).toContainText(data.UserName);
+      await expect(page.locator(locators.LogoutMenuItem)).toContainText(`${data.LoggedInMenuText} ${data.UserName}`);
+      await expect(page).toHaveTitle(data.FormPageTitle);
+      await expect(page).toHaveURL(data.FormPageUrl);
+      await expect(page.locator(locators.FormPageHeading)).toContainText(data.FormPageHeading);
+    });
 
-// });
+    await test.step(`Step 6 - Submit New Guestbook entry`, async () => {
+      await page.fill(locators.FullNameInput, data.UserFullname);
+      await page.fill(locators.EmailInput, data.UserEmail);
+      if (data.UserNewsletter == "Yes") {
+        await page.click(locators.NewsletterCheckbox);
+      }
+      if (data.UserGender == "Female") {
+        await page.locator(locators.GenderFemaleOption).check();
+      }
+      await page.selectOption(locators.FavtoolList, data.UserFavtool);
+      await page.fill(locators.CommentTextInput, data.UserComment);
+      await page.click(locators.SubmitButton);
+    });
 
-// test.describe('Login Tests - VERSION 02 - Basic Test with external locators + steps', () => {
+    await test.step(`Step 7 - Validate Gestbook Entry`, async () => {
+      await expect(page.locator(locators.TitleName)).toContainText(data.UserFullname);
+      const uniquID = await page.locator(locators.EntryUniqueID).innerText();
+      console.log(uniquID);
+      data.EntryUniqueID = uniquID;
+      await expect(page.locator(locators.FullNameValue)).toContainText(data.UserFullname)
+      await expect(page.locator(locators.EmailValue)).toContainText(data.UserEmail);
+      await expect(page.locator(locators.NewsletterSelection)).toContainText(data.UserNewsletter);
+      await expect(page.locator(locators.GenderSelection)).toContainText(data.UserGender.toLowerCase());
+      await expect(page.locator(locators.FavtoolSelection)).toContainText(data.UserFavtool);
+      await expect(page.locator(locators.CommentValue)).toContainText(data.UserComment.substring(0, 250));
 
-//   test(`Login as : USER`, async ({ page }) => {
-
-//     await test.step(`Step 1 - Load Site Data for user: ADMIN`, async () => {
-//       data.UserType = 'ADMIN'
-//       data.UserName = 'admin@'
-//       data.Password = 'root'
-//     });
-
-//     await test.step(`Step 2 - Launch Application`, async () => {
-//       await page.goto(data.BaseUrl);
-//       await expect(page).toHaveTitle(data.HomePageTitle);
-//       await expect(page).toHaveURL(data.HomePageUrl);
-//       await expect(page.locator(locators.HomePageHeading)).toContainText(data.HomePageHeading);
-//     });
-
-//     await test.step(`Step 3 - Navigate to Login Page`, async () => {
-//       await page.locator(locators.LoginMenuItem).click();
-//       await expect(page).toHaveTitle(data.LoginPageTitle);
-//       await expect(page).toHaveURL(data.LoginPageUrl);
-//       await expect(page.locator(locators.LoginPageHeading)).toContainText(data.LoginPageHeading);
-//     });
-
-//     await test.step(`Step 4 - Login as ADMIN`, async () => {
-//       await page.fill(locators.UserNameInput, data.UserName);
-//       await page.fill(locators.PasswordInput, 'root');
-//       await page.click(locators.SubmitButton);
-//     });
-
-//     await test.step(`Step 5 - Validate Login`, async () => {
-//       await expect(page.locator(locators.CurrentUserName)).toContainText(data.UserName);
-//       await expect(page.locator(locators.LogoutMenuItem)).toContainText(`${data.LoggedInMenuText} ${data.UserName}`);
-//       await expect(page).toHaveTitle(data.FormPageTitle);
-//       await expect(page).toHaveURL(data.FormPageUrl);
-//       await expect(page.locator(locators.FormPageHeading)).toContainText(data.FormPageHeading);
-//     });
-
-//     await test.step(`Step 6 - Submit New Guestbook entry`, async () => {
-//       await page.fill(locators.FullNameInput, data.FullName);
-//       await page.fill(locators.EmailInput, data.Email);
-//       if (data.Newsletter == "Yes") {
-//         await page.click(locators.NewsletterCheckbox);
-//       }
-//       if (data.Gender == "Female") {
-//         await page.locator(locators.GenderFemaleOption).check();
-//       }
-//       await page.selectOption(locators.FavtoolList, data.Favtool);
-//       await page.fill(locators.CommentTextInput, data.CommentText);
-//       await page.click(locators.SubmitButton);
-//     });
-
-//     await test.step(`Step 7 - Validate Gestbook Entry`, async () => {
-//       await expect(page.locator(locators.TitleName)).toContainText(data.FullName);
-//       const uniquID = await page.locator(locators.EntryUniqueID).innerText();
-//       console.log(uniquID);
-//       data.EntryUniqueID = uniquID;
-//       await expect(page.locator(locators.FullNameValue)).toContainText(data.FullName)
-//       await expect(page.locator(locators.EmailValue)).toContainText(data.Email);
-//       await expect(page.locator(locators.NewsletterSelection)).toContainText(data.Newsletter);
-//       await expect(page.locator(locators.GenderSelection)).toContainText(data.Gender.toLowerCase());
-//       await expect(page.locator(locators.FavtoolSelection)).toContainText(data.Favtool);
-//       await expect(page.locator(locators.CommentValue)).toContainText(data.CommentText.substring(0, 250));
-      
-//       await page.locator(locators.ViewGuestBookMenuItem).click();
-//       await expect(page.locator("id=" + data.EntryUniqueID)).toBeVisible();
-//     });
+      await page.locator(locators.ViewGuestBookMenuItem).click();
+      await expect(page.locator("id=" + data.EntryUniqueID)).toBeVisible();
+    });
 
 
-//     await test.step(`Step 8 - Logout`, async () => {
-//       await page.click(locators.LogoutMenuItem);
-//       await expect(page.locator(locators.LoginMenuItem)).toHaveText(data.LoggedOutMenuText);
-//     });
-//   });
+    await test.step(`Step 8 - Logout`, async () => {
+      await page.click(locators.LogoutMenuItem);
+      await expect(page.locator(locators.LoginMenuItem)).toHaveText(data.LoggedOutMenuText);
+    });
+  });
 
-// });
+});
 
-test.describe('Login Tests - VERSION 01 - Basic Test with inline locators', () => {
+test.describe('TEST SUITE 01 - Login Tests - VERSION 01 - Basic Test with inline locators', () => {
 
   test(`Login as : USER`, async ({ page }) => {
 
@@ -250,7 +257,7 @@ test.describe('Login Tests - VERSION 01 - Basic Test with inline locators', () =
     //---------------------
     await page.fill("id=txt_name", "Jane Doe");
     await page.fill("id=txt_email", "jane.d03@yahoo.com");
-    await page.locator("id=chk_subscribe").click(); 
+    await page.locator("id=chk_subscribe").click();
     await page.locator("id=rdb_genderFemale").check();
     await page.selectOption("id=cmb_favtool", "Microsoft Playwright");
     await page.fill("id=txt_comment", "Test Automation is awesome!");
@@ -280,6 +287,8 @@ test.describe('Login Tests - VERSION 01 - Basic Test with inline locators', () =
 
     await page.locator('id=LogoutMenuItem').click();
     await expect(page.locator('id=LoginMenuItem')).toHaveText('Login');
+    await expect(page.locator('id=LogoutMenuItem')).not.toBeVisible();
+    await expect(page.locator('id=current_user_name')).not.toBeVisible();
 
   });
 

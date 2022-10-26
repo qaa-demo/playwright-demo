@@ -34,7 +34,7 @@ const locators = {
   GenderSelection: "id=gender",
   FavtoolSelection: "id=favtool",
   CommentValue: "id=comment",
-  //----------------------------------
+  //---------------- captured during the run ------------------
   GuestbookName: '',
   GuestbookPostedOn: '',
   GuestbookFavtool: '',
@@ -42,20 +42,7 @@ const locators = {
 };
 
 const data = {
-  //---------------
-  UserType: "",
-  UserName: "",
-  Password: "",
-  //----------- randomly assigned, see below -----
-  UserFullname: "",
-  UserEmail: "",
-  UserNewsletter: "",
-  UserGender: "",
-  UserFavtool: "",
-  UserComment: "",
-  //----------------
-  EntryUniqueID: '',
-  //----------------
+
   AppName: "Guestbook Demo",
   BaseUrl: global.BASE_URL,
   //----------------
@@ -76,7 +63,30 @@ const data = {
   GuestbookHeading: "Guestbook",
   //------------------
   LoginErrorMsg: "Login unsuccessful, check the user name and password!",
-  //------------------
+  //--------------------------------------------------------------------
+
+
+
+
+
+
+  
+  
+  //----------- loaded from csv file -------------
+  UserType: "",
+  UserName: "",
+  Password: "",
+  //----------- randomly generated -----
+  UserFullname: "",
+  UserEmail: "",
+  UserNewsletter: "",
+  UserGender: "",
+  UserFavtool: "",
+  UserComment: "",
+  //----------------
+  EntryUniqueID: '',
+  //----------------
+
 };
 
 module.exports = { locators, data };

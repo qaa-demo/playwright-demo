@@ -65,9 +65,9 @@ npm install
   ```
 
 By default test runs in **headless mode** . To see the browser during execution change to headed mode - update **playwight.config.js** file:
-  ```
-  headless: false
-  ```
+```
+headless: false
+```
 By default execution trace is set to **retain on failure only** (trace is captured but deleted if the test passes):
 ```
 trace: 'retain-on-failure'
@@ -86,9 +86,37 @@ video: 'on'
 # Create new tests
 ## resources/locators.js
 Add locators & Data
+```
+const locators = {
+  HomePageHeading: "id=main-header",
+  LoginPageHeading: "id=login-page-main-header",
+  FormPageHeading: "id=sign-form-main-header",
+}
+```
+```
+const data = {
+  HomePageHeading: "Home Page",
+  LoginPageHeading: "Login",
+  FormPageHeading: "Sign The Guestbook",
+}
+```
+
 
 ## pages/pages.js
 Add New Page Class (if required or use existing)
+
+```
+class HomePage {
+
+    constructor(page) {
+      this.page = page;
+    }
+
+    async navigateToHomePage() {
+      await this.page.goto(data.BaseUrl);
+    }
+  }
+```
 Add Methods
 
 ## tests/common.js
