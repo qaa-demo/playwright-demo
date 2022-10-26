@@ -13,7 +13,7 @@ const user1 = 'ADMIN'
 const user2 = 'USER'
 const user3 = 'NOUSER'
 
-test.describe('TEST SUITE 05 - Login Tests - VERSION 05 - Full Reusable Tests', () => {
+test.describe.only('TEST SUITE 05 - Login Tests - VERSION 05 - Full Reusable Tests', () => {
 
   test.beforeEach(async ({ page }, testInfo) => {
     await common.RunBefore({ page }, testInfo);
@@ -234,7 +234,7 @@ test.describe('TEST SUITE 02 - Login Tests - VERSION 02 - Basic Test with extern
 
 test.describe('TEST SUITE 01 - Login Tests - VERSION 01 - Basic Test with inline locators', () => {
 
-  test.only(`Login as : USER`, async ({ page }) => {
+  test(`Login as : USER`, async ({ page }) => {
 
     await page.goto('https://testautomationpro.com/aut/');
     await expect(page).toHaveTitle('Home - Guestbook Demo');
