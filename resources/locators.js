@@ -17,6 +17,17 @@ const locators = {
   SubmitButton: "id=btn_submit",
   ErrorMessage: "id=errormsg",
   //--------------------------------
+
+
+
+
+
+
+
+
+
+  
+  //--------------------------------
   FullNameInput: "id=txt_name",
   EmailInput: "id=txt_email",
   NewsletterCheckbox: "id=chk_subscribe",

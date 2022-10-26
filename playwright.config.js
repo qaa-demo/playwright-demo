@@ -25,7 +25,7 @@ const config = {
     screenshot: 'only-on-failure',
     headless: false,
     launchOptions: {
-      slowMo: 300,
+      slowMo: 500,
     },
   },
   outputDir: 'test-results/', /* Folder for test artifacts such as screenshots, videos, traces, etc. */

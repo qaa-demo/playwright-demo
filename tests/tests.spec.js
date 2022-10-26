@@ -23,7 +23,7 @@ test.describe('TEST SUITE 05 - Login Tests - VERSION 05 - Full Reusable Tests', 
     await common.RunAfter({ page }, testInfo);
   });
 
-  test(`Login as : ${user1}`, async ({ page }) => {
+  test.only(`Login as : ${user1}`, async ({ page }) => {
     await common.ValidUserLogin_Steps(page, user1);
   });
 

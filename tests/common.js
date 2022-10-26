@@ -13,7 +13,7 @@ module.exports = {
 
   LoadLoginData: async function (usertype, stepnum) {
     
-    await test.step(`Step ${stepnum} - Load Site Data for user: ${usertype}`, async () => {
+    await test.step(`Step ${stepnum} - Load Data for user: ${usertype}`, async () => {
 
       const records = parse(
         fs.readFileSync(path.join(__dirname, "_input.csv")),
@@ -40,14 +40,10 @@ module.exports = {
   GenerateRandomData: async function (stepnum) {
 
     await test.step(`Step ${stepnum} - Generate Random Data`, async () => {
-      // ------------------------- generate random data
 
-      // var userGender = chance.gender();
       var userGender = chance.pickone(['Male', 'Female']);
       var userFullname = chance.name({ gender: userGender });
-      var userName = (userFullname.toLowerCase().replace(" ", "").substring(0, 13) + chance.integer({ min: 11, max: 99 }));
-      var domainName = chance.domain();
-      var userEmail = `${userName}@${domainName}`;
+      var userEmail = chance.email();
       var userFavtool = chance.pickone(["Microfocus UFT One", "Selenium WebDriver", "Katalon Studio", "Microsoft Playwright",]);
       var userComment = chance.paragraph({ sentences: chance.integer({ min: 2, max: 5 }), });
       var userNewsletter = chance.pickone(["Yes", "No"]);
