@@ -1,12 +1,12 @@
 # Playwright Demo Project
 
 Playwright Automated Testing Tool Demo Project
-* Testing Login functionality on [Guestbook Demo App](https://testautomationpro.com/aut/) => tests/guestbook.spec.js
+* Testing Login functionality on [Guestbook Demo App](https://testautomationpro.com/aut/) => tests/tests.spec.js
 
 ## Purpose: Playwright Functionality Demo
 * Page Object Model (POM)
 * Reusability with common steps
-* Data Parameterization with external .csv file
+* Data Parameterization with external .csv file and mock data
 
 ## Prerequisites
 
