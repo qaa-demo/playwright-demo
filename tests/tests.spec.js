@@ -7,12 +7,11 @@ const fs = require('fs');
 const path = require('path');
 const { parse } = require('csv-parse/sync');
 
-
-
 const user1 = 'ADMIN'
 const user2 = 'USER'
 const user3 = 'NOUSER'
 
+// .only runs only the specified suite, can be used with test ... test.only()...
 test.describe.only('TEST SUITE 05 - Login Tests - VERSION 05 - Full Reusable Tests', () => {
 
   test.beforeEach(async ({ page }, testInfo) => {

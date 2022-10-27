@@ -42,6 +42,18 @@ class LoginPage {
   async navigateToLoginPage() {
     await this.page.locator(locators.LoginMenuItem).click();
   }
+  
+  async enterUserName() {
+    await this.page.fill(locators.UserNameInput, data.UserName);
+  }
+
+  async enterPassword() {
+    await this.page.fill(locators.PasswordInput, data.Password);
+  }
+
+  async clickSubmitButton() {
+    await this.page.click(locators.SubmitButton);
+  }
 
   async validateSiteTitle() {
     await expect(this.page).toHaveTitle(data.LoginPageTitle);
@@ -61,17 +73,6 @@ class LoginPage {
     await this.validateLoginPageTitle()
   }
 
-  async enterUserName() {
-    await this.page.fill(locators.UserNameInput, data.UserName);
-  }
-
-  async enterPassword() {
-    await this.page.fill(locators.PasswordInput, data.Password);
-  }
-
-  async clickSubmitButton() {
-    await this.page.click(locators.SubmitButton);
-  }
 
   async loginAs() {
     await this.enterUserName();
