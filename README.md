@@ -45,7 +45,7 @@ x64
 
 ## Project and dependancies Installation
 ```
-git clone https://github.com/tatyana-kiseleva/playwright-demo.git
+git clone https://github.com/tatyana-teck/playwright-demo.git
 ```
 ```
 cd playwright-demo
