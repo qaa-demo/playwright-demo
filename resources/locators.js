@@ -17,15 +17,6 @@ const locators = {
   SubmitButton: "id=btn_submit",
   ErrorMessage: "id=errormsg",
   //--------------------------------
-
-
-
-
-
-
-
-
-
   
   //--------------------------------
   FullNameInput: "id=txt_name",
@@ -76,13 +67,6 @@ const data = {
   LoginErrorMsg: "Login unsuccessful, check the user name and password!",
   //--------------------------------------------------------------------
 
-
-
-
-
-
-  
-  
   //----------- loaded from csv file -------------
   UserType: "",
   UserName: "",
