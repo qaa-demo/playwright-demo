@@ -5,3 +5,4 @@ node_modules/
 /playwright/.cache/
 /test-examples/
 *.env
+/_bkp/
